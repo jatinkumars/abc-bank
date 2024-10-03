@@ -18,6 +18,10 @@ public class Customer {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Customer openAccount(Account account) {
         accounts.add(account);
         return this;
@@ -74,5 +78,18 @@ public class Customer {
 
     private String toDollars(double d){
         return String.format("$%,.2f", abs(d));
+    }
+
+
+    public void transfer(Account fromAccount, Account toAccount, double amount) {
+        if (fromAccount == null || toAccount == null) {
+            throw new IllegalArgumentException("Accounts cannot be null");
+        }
+        if (fromAccount.sumTransactions() < amount) {
+            throw new IllegalArgumentException("Insufficient funds in the source account");
+        }
+
+        fromAccount.withdraw(amount);
+        toAccount.deposit(amount);
     }
 }

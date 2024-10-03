@@ -2,8 +2,12 @@ package com.abc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Logger;
 
 public class Bank {
+
+    private static final Logger logger = Logger.getLogger(Bank.class.getName());
     private List<Customer> customers;
 
     public Bank() {
@@ -12,6 +16,10 @@ public class Bank {
 
     public void addCustomer(Customer customer) {
         customers.add(customer);
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
     }
 
     public String customerSummary() {
@@ -36,11 +44,23 @@ public class Bank {
 
     public String getFirstCustomer() {
         try {
-            customers = null;
-            return customers.get(0).getName();
-        } catch (Exception e){
-            e.printStackTrace();
-            return "Error";
+            if (customers != null && !customers.isEmpty()) {
+                return customers.get(0).getName();
+            } else {
+                return "No customers available";
+            }
+        } catch (IndexOutOfBoundsException e){
+            logger.severe("Failed to retrieve the first customer: " + e.getMessage());
+            return e.getMessage();
+        }
+
+        catch (Exception e){
+            logger.severe("Failed to retrieve the first customer: " + e.getMessage());
+            return e.getMessage();
         }
     }
+
+
+
+
 }
